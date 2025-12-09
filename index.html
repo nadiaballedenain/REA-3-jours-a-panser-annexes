@@ -678,33 +678,54 @@
         </div>
     </div>
 
-    <script>
-        function showMainTab(index) {
-            // Hide all contents
-            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
-            
-            // Show selected
-            document.getElementById(`pilier${index}`).classList.add('active');
-            document.querySelectorAll('.main-tab-btn')[index].classList.add('active');
-            
-            // Reset sub-tabs
-            document.querySelectorAll('.sub-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.sub-content')[index * 3].classList.add('active');
-            document.querySelectorAll('.sub-tab-btn')[index * 3].classList.add('active');
-        }
+  <script>
+    // Affiche un pilier et son premier sous-onglet
+    function showMainTab(index) {
+        const contents = document.querySelectorAll('.content');
+        const mainButtons = document.querySelectorAll('.main-tab-btn');
 
-        function showSubTab(pilier, subIndex) {
-            const allSubContents = document.querySelectorAll(`#pilier${pilier} .sub-content`);
-            const allSubBtns = document.querySelectorAll(`#pilier${pilier} .sub-tab-btn`);
-            
-            allSubContents.forEach(c => c.classList.remove('active'));
-            allSubBtns.forEach(b => b.classList.remove('active'));
-            
-            allSubContents[subIndex].classList.add('active');
-            allSubBtns[subIndex].classList.add('active');
+        contents.forEach(c => c.classList.remove('active'));
+        mainButtons.forEach(b => b.classList.remove('active'));
+
+        document.getElementById('pilier' + index).classList.add('active');
+        mainButtons[index].classList.add('active');
+
+        // Réinitialiser les sous-onglets de CE pilier uniquement
+        const subContents = document.querySelectorAll('#pilier' + index + ' .sub-content');
+        const subButtons = document.querySelectorAll('#pilier' + index + ' .sub-tab-btn');
+
+        subContents.forEach(c => c.classList.remove('active'));
+        subButtons.forEach(b => b.classList.remove('active'));
+
+        if (subContents.length > 0) {
+            subContents[0].classList.add('active');
         }
-    </script>
+        if (subButtons.length > 0) {
+            subButtons[0].classList.add('active');
+        }
+    }
+
+    // Affiche un sous-onglet donné dans un pilier donné
+    function showSubTab(pilierIndex, subIndex) {
+        const subContents = document.querySelectorAll('#pilier' + pilierIndex + ' .sub-content');
+        const subButtons = document.querySelectorAll('#pilier' + pilierIndex + ' .sub-tab-btn');
+
+        subContents.forEach(c => c.classList.remove('active'));
+        subButtons.forEach(b => b.classList.remove('active'));
+
+        if (subContents[subIndex]) {
+            subContents[subIndex].classList.add('active');
+        }
+        if (subButtons[subIndex]) {
+            subButtons[subIndex].classList.add('active');
+        }
+    }
+
+    // Forcer l’état initial au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+        showMainTab(0); // Pilier 1
+    });
+</script>
+
 </body>
 </html>
